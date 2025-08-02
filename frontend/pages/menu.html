@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://kit.fontawesome.com/a9eb96d961.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <nav>
+        <div class="navbar">
+            <div class="logo">
+                <img src="/frontend/assets/logo.png" alt="Logo">
+            </div>
+            <div class="buttons">
+                <a href="/profile"> <i class="fa-solid fa-user"></i> My Profile</a>
+
+            </div>
+        </div>
+    </nav>
+    <div class="cont">
+        <div class="searchCont">    <input class="search" id="searchInput" placeholder="UwU" type="search"><i class="fa-solid fa-magnifying-glass"></i></div>
+
+    <section>
+        <div class="container">
+            <div class="menu">
+                <div class="card">
+                    <img src="dishes/brownie.jpeg" alt="Brownie">
+                    <div class="info">
+                        <p class="title"> Brownie </p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 30</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/chole-bhature.jpeg" alt="Chole Bhature">
+                    <div class="info">
+                        <p class="title">Chole Bhature</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 70</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/fries.jpeg" alt="Fries">
+                    <div class="info">
+                        <p class="title">Fries</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 50</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/maggie.jpeg" alt="Maggie">
+                    <div class="info">
+                        <p class="title">Maggie</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 40</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/momos.jpeg" alt="Momos">
+                    <div class="info">
+                        <p class="title">Momos</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 60</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/panipuri.jpeg" alt="Panipuri">
+                    <div class="info">
+                        <p class="title">Panipuri</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 25</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/panner-tikka.jpeg" alt="Paneer Tikka">
+                    <div class="info">
+                        <p class="title">Paneer Tikka</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 90</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="dishes/soya-chap.jpeg" alt="Soya Chaap">
+                    <div class="info">
+                        <p class="title">Soya Chaap</p>
+                        <div class="info-actions">
+                            <p class="price"><i class="fa-solid fa-indian-rupee-sign"></i> 80</p>
+                            <p class="add-to-cart"><i class="fa-solid fa-burger"></i> Add to Table</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    </div>
+
+
+<script>
+// Typewriter effect for the search input placeholder
+const dishes = [
+  "Brownie",
+  "Chole Bhature",
+  "Fries",
+  "Maggie",
+  "Momos",
+  "Panipuri",
+  "Paneer Tikka",
+  "Soya Chaap"
+];
+const input = document.getElementById('searchInput');
+let dishIndex = 0;
+let charIndex = 0;
+let typing = true;
+
+function typeWriter() {
+  if (!input) return;
+  const currentDish = dishes[dishIndex];
+  if (typing) {
+    if (charIndex <= currentDish.length) {
+      input.placeholder = currentDish.slice(0, charIndex);
+      charIndex++;
+      setTimeout(typeWriter, 100);
+    } else {
+      typing = false;
+      setTimeout(typeWriter, 1000);
+    }
+  } else {
+    if (charIndex > 0) {
+      input.placeholder = currentDish.slice(0, charIndex);
+      charIndex--;
+      setTimeout(typeWriter, 40);
+    } else {
+      typing = true;
+      dishIndex = (dishIndex + 1) % dishes.length;
+      setTimeout(typeWriter, 400);
+    }
+  }
+}
+typeWriter();
+</script>
+
+
+  <footer>
+    <div class="footer">
+      <div class="learnMore">
+        <p class="footerHeading">Learn More</p>
+        <a href="/about">About Us</a>
+        <a href="/about">Privacy</a>
+        <a href="/about">Terms of Service</a>
+        <a href="/about">Help and Support</a>
+        <a href="/contact">Contact Us</a>
+      </div>
+      <div class="socials">
+        <p class="footerHeading">Our Socials</p>
+        <a href="https://google.com">Discord</a>
+        <a href="/about">LinkedIn</a>
+        <a href="/about">Twitter</a>
+        <a href="/about">Youtube</a>
+        <br />
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
