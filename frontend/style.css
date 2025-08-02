@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: poppins;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+.navbar {
+    right: 0;
+    position: absolute;
+    height: 10vh;
+    width: 50vw;
+    z-index: 3;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    gap: 4rem;
+
+
+}
+
+.navbar a {
+    z-index: 3;
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.302);
+    z-index: 1;
+}
+
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+
+
+.name {
+    font-style: italic;
+
+    font-size: 10rem;
+    color: white;
+    margin: 0;
+}
+
+.tagline {
+    font-size: 3rem;
+    color: white;
+    margin: 0;
+}
+
+
+
+.footer {
+    height: 50vh;
+    width: 100%;
+    background-color: #000;
+    display: flex;
+}
+
+.footerHeading {
+    margin-bottom: 6px;
+    width: 180px;
+    text-align: left;
+    font-size: medium;
+    text-decoration: none;
+    color: white;
+}
+
+.learnMore,
+.socials {
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 50%;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.learnMore>a,
+.socials>a {
+    margin: 2px;
+    width: 180px;
+    text-align: left;
+    font-size: 0.89rem;
+    text-decoration: none;
+    color: rgb(127, 123, 123);
+}
+
+
+.primary {
+    width: 30%;
+    text-align: center;
+    background-color: #f96060;
+}
+
+
+
+.learnMore a:hover , .socials a:hover{
+    color: white;
+}
+
+.hero-buttons {
+    position: absolute;
+    z-index: 2;
+}
+
+.buttons {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    width: 100%;
+}
+
+.buttons > a {
+    text-decoration: none;
+    color: white;
+    gap: 2rem;
+    width: 20%;
+    margin: 2rem;
+}
+
+.btn {
+    border-radius: 15px;
+}
+
