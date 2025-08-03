@@ -28,7 +28,8 @@ body {
 .buttons {
     margin-right: 1rem;
 }
-.buttons > a:hover {
+
+.buttons>a:hover {
     transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -41,7 +42,7 @@ body {
     gap: 0.5rem;
 }
 
-.card > img {
+.card>img {
     border-radius: 15px;
     width: 20vw;
     height: 25vh;
@@ -60,7 +61,7 @@ body {
 
 }
 
-.info { 
+.info {
     margin-top: 0.5rem;
 }
 
@@ -78,13 +79,15 @@ body {
     text-align: center;
     background-color: rgb(53, 187, 53);
 }
+
 .card {
     padding: 1rem;
 }
+
 .card:hover {
 
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-   
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
     transition: box-shadow 0.2s;
 }
 
@@ -146,7 +149,8 @@ body {
     color: rgb(127, 123, 123);
 }
 
-.learnMore a:hover , .socials a:hover{
+.learnMore a:hover,
+.socials a:hover {
     color: white;
 }
 
@@ -184,9 +188,10 @@ body {
     transition: color 0.2s;
 }
 
-.searchCont > i {
+.searchCont>i {
     margin-right: 1rem;
 }
-.searchCont > i:hover {
+
+.searchCont>i:hover {
     color: #ec4747;
 }
