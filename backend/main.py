@@ -1,6 +1,5 @@
 from fastapi import FastAPI 
 from starlette.middleware.cors import CORSMiddleware
-
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -8,34 +7,63 @@ from pydantic import BaseModel,EmailStr
 load_dotenv()
 
 app = FastAPI()
-client = MongoClient(os.getenv("MONGO_URI"))
-db = client["restaurant"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For dev only; restrict in production
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+
+client = MongoClient(os.getenv("MONGO_URI"))
+db = client["Restaurant"]
 userCollection = db["users"]
+
+
 @app.get("/")
 def default():
     return {
         "data" : "Hello World"
         
     }
+
+
+
 class User(BaseModel):
     name : str
     mail : EmailStr
     password : str
+
+class LoginUser(BaseModel):
+    mail: EmailStr
+    password: str
+
 @app.post("/register")
-def register():
-    return {
-        "response" : "success"
-    }
+def register(user:User):
+    userInDb = userCollection.find_one({"mail": user.mail}) #🔎 hai ye??
+    if (userInDb):
+        return {"response" : "alreadyExists"} # 😡 alt kyu bnara hai
+    else:
+        userCollection.insert_one({
+        "name" : user.name,
+        "mail" : user.mail,
+        "password" : user.password
+        })
+        return {
+            "response" : "success"
+        }
+
+
+
 
 @app.post("/login")
-def register():
-    return {
-        "response" : "success"
-    }
+def login(user: LoginUser):
+    userInDb = userCollection.find_one({"mail": user.mail}) #🔎 kha hai ye
+    if not userInDb: #agar na mile 🔴
+        return {"response": "notExist"}
+    if userInDb["password"] == user.password: #agr mil jaye 🟢
+        return {"response": "success"}
+    else: #use password manager 👍🏻
+        return {"response": "wrongPassword"}

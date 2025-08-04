@@ -6,12 +6,12 @@ submitButton.addEventListener("click", register)
 async function register(e) {
     e.preventDefault();
     let name = document.querySelector("#name").value
-    let email = document.querySelector("#mail").value
+    let mail = document.querySelector("#mail").value
     let password = document.querySelector("#password").value
     const data = JSON.stringify(
         {
             name,
-            email,
+            mail,
             password
         }
     )
@@ -36,9 +36,23 @@ async function register(e) {
         document.querySelector("#password").value = "";
         setTimeout(() => {
             toaster.classList.remove("show");
+             window.location.href = "../login/"
         }, 1500)
 
 
+    }
+
+    else if (result.response === "alreadyExists") {
+        toaster.innerText = "User Already Exists";
+        toaster.style.backgroundColor = "#f7911cff"
+        toaster.style.color = "#ffffff"
+        toaster.classList.add("show")
+        document.querySelector("#name").value = "";
+        document.querySelector("#mail").value = "";
+        document.querySelector("#password").value = "";
+        setTimeout(() => {
+            toaster.classList.remove("show");
+        }, 1500)
     }
     else {
         toaster.innerText = "Please try again later!"

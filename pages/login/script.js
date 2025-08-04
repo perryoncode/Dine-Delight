@@ -30,8 +30,33 @@ async function login(e) {
             document.querySelector("#password").value = "";
             setTimeout(() => {
                 toaster.classList.remove("show");
+                window.location.href = "../menu/"
             }, 1500);
-        } else {
+
+        } 
+        else if (result.response ===  "notExist") {
+            toaster.innerText = "User doesn't exist";
+            toaster.style.backgroundColor = "#fd9d1fff";
+            toaster.style.color = "#ffffff";
+            toaster.classList.add("show");
+            document.querySelector("#mail").value = "";
+            document.querySelector("#password").value = "";
+            setTimeout(() => {
+                toaster.classList.remove("show");
+            }, 1500);
+        }
+        else if (result.response ===  "wrongPassword") {
+            toaster.innerText = "Wrong Password";
+            toaster.style.backgroundColor = "#ff4444ff";
+            toaster.style.color = "#ffffff";
+            toaster.classList.add("show");
+            document.querySelector("#mail").value = "";
+            document.querySelector("#password").value = "";
+            setTimeout(() => {
+                toaster.classList.remove("show");
+            }, 1500);
+        }
+        else {
             toaster.innerText = "Please try again later!";
             toaster.style.backgroundColor = "#ea5050ff";
             toaster.style.color = "#ffffff";
