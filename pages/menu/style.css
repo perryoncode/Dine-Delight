@@ -27,6 +27,8 @@ body {
 
 .buttons {
     margin-right: 1rem;
+    display: flex;
+    gap: 2rem;
 }
 
 .buttons>a:hover {
@@ -107,7 +109,7 @@ body {
     flex-direction: column;
     display: flex;
     align-items: center;
-    width: 100vw;
+    width: 100%;
 
 }
 
@@ -194,4 +196,21 @@ body {
 
 .searchCont>i:hover {
     color: #ec4747;
+}
+
+
+
+
+
+#logo > img  {
+    height: 6vh;
+    width: 10vw;
+    z-index: 99;
+    /* width: 8vh; */
+}
+#logo {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
