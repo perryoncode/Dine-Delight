@@ -64,6 +64,8 @@ def login(user: LoginUser):
     if not userInDb: #agar na mile 🔴
         return {"response": "notExist"}
     if userInDb["password"] == user.password: #agr mil jaye 🟢
-        return {"response": "success"}
+        userInDb["_id"] = str( userInDb["_id"])
+        userInDb.pop("password",None)
+        return {"response": "success" , "user": userInDb}
     else: #use password manager 👍🏻
         return {"response": "wrongPassword"}

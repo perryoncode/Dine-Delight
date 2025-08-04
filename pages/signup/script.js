@@ -1,7 +1,9 @@
+if (document.cookie.includes("name=")){
+    window.location.href = "../menu/"
+}
 let registerForm = document.querySelector("#form")
 let submitButton = document.querySelector(".submitButton")
 let toaster = document.querySelector(".toaster")
-
 submitButton.addEventListener("click", register)
 async function register(e) {
     e.preventDefault();
