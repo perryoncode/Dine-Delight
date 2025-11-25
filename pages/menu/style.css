@@ -214,3 +214,45 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+
+.viewItems{
+position: fixed;  
+width: 10rem;   /* stays even when scrolling */
+  bottom: 4rem;        /* distance from bottom */
+  right: 3.5rem;         /* distance from right */
+  background-color: #ec4747;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  /* font-weight: bold; */
+  cursor: pointer;
+  z-index: 9999;       /* highest layer */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+
+
+
+.add-to-cart {
+  background-color: #35bb35;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;            /* makes hand pointer */
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #2ca02c;
+  transform: scale(1.05);     /* slight zoom hover */
+}
+
+.add-to-cart:active {
+  transform: scale(0.95);     /* press effect */
+}

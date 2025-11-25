@@ -1,24 +1,17 @@
-// ==== COOKIE LOGIN CHECK ====
 setTimeout(() => {
   if (!document.cookie.includes("name=")) {
-    console.warn("No cookie found. Probably arriving from QR redirect, waiting...");
   }
 }, 2000);
 
+const API_BASE = "http://127.0.0.1:8000";
 
-
-// === CONFIG ===
-const API_BASE = "http://127.0.0.1:8000"; // change to your VPS IP when needed
-
-// === ELEMENTS ===
 const menuContainer = document.querySelector(".menu");
 const input = document.getElementById("searchInput");
-
-// for profile name from cookie (optional, matches your earlier pattern)
 const myProfile = document.querySelector(".myProfile");
 const logoutButton = document.querySelector(".logoutButton");
+const viewItemsBtn = document.querySelector(".viewItems");
+const checkoutCountEl = document.getElementById("checkoutCount");
 
-// === SIMPLE COOKIE HELPER ===
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -26,7 +19,16 @@ function getCookie(name) {
   return null;
 }
 
-// Show profile name (works for both real user & table guest)
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function updateCheckoutCount() {
+  if (!checkoutCountEl) return;
+  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  checkoutCountEl.textContent = totalQty;
+}
+
+updateCheckoutCount();
+
 (function initProfile() {
   const name = getCookie("name");
   if (name && myProfile) {
@@ -34,7 +36,6 @@ function getCookie(name) {
   }
 })();
 
-// Logout clears cookies and goes to login
 if (logoutButton) {
   logoutButton.addEventListener("click", (e) => {
     e.preventDefault();
@@ -45,9 +46,7 @@ if (logoutButton) {
   });
 }
 
-// === LOAD DISHES FROM BACKEND ===
 let dishNamesForTypewriter = [
-  // fallback values if API fails
   "Brownie",
   "Chole Bhature",
   "Fries",
@@ -64,7 +63,6 @@ async function loadDishes() {
     const data = await res.json();
 
     if (data.response !== "success") {
-      console.error("Failed to load dishes:", data);
       menuContainer.innerHTML = "<p>Unable to load menu right now.</p>";
       return;
     }
@@ -75,17 +73,14 @@ async function loadDishes() {
       return;
     }
 
-    // Use dish names from API for the typewriter
     dishNamesForTypewriter = dishes.map((d) => d.name);
 
-    // Clear any static cards
     menuContainer.innerHTML = "";
 
     dishes.forEach((dish) => {
       const card = document.createElement("div");
       card.className = "card";
 
-      // images are in /pages/menu/dishes/<filename>
       const imgSrc = `./dishes/${dish.image}`;
 
       card.innerHTML = `
@@ -96,11 +91,11 @@ async function loadDishes() {
             <p class="price">
               <i class="fa-solid fa-indian-rupee-sign"></i> ${dish.price}
             </p>
-            <p class="add-to-cart"
-               data-name="${dish.name}"
-               data-price="${dish.price}">
-               <i class="fa-solid fa-burger"></i> Add to Table
-            </p>
+            <button class="add-to-cart"
+              data-name="${dish.name}"
+              data-price="${dish.price}">
+              <i class="fa-solid fa-burger"></i> Add to Table
+            </button>
           </div>
         </div>
       `;
@@ -108,22 +103,51 @@ async function loadDishes() {
       menuContainer.appendChild(card);
     });
 
-    // hook up Add to Table buttons later for cart system
     document.querySelectorAll(".add-to-cart").forEach((btn) => {
       btn.addEventListener("click", () => {
         const name = btn.dataset.name;
         const price = Number(btn.dataset.price);
-        console.log("Add to Table clicked:", name, price);
-        // TODO: add to cart / table order
+
+        const existing = cart.find((item) => item.name === name);
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({
+            name,
+            price,
+            quantity: 1,
+          });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCheckoutCount();
       });
     });
   } catch (err) {
-    console.error("Error loading dishes:", err);
     menuContainer.innerHTML = "<p>Network error while loading menu.</p>";
   }
 }
 
-// === TYPEWRITER PLACEHOLDER (USING dishNamesForTypewriter) ===
+if (viewItemsBtn) {
+  viewItemsBtn.addEventListener("click", () => {
+    if (!cart.length) {
+      alert("No items added to table yet.");
+      return;
+    }
+
+    let msg = "Items on your table:\n\n";
+    let total = 0;
+    cart.forEach((item) => {
+      const lineTotal = item.price * item.quantity;
+      total += lineTotal;
+      msg += `${item.name}  x${item.quantity}  = ₹${lineTotal}\n`;
+    });
+    msg += `\nTotal: ₹${total}`;
+
+    alert(msg);
+  });
+}
+
 let dishIndex = 0;
 let charIndex = 0;
 let typing = true;
@@ -153,6 +177,5 @@ function typeWriter() {
   }
 }
 
-// === INIT ===
 loadDishes();
 typeWriter();
