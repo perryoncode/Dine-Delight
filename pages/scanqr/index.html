@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <title>Scan QR</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #000; color: #fff; }
+    #video { width: 100vw; height: auto; }
+    .overlay { position: fixed; top: 10px; left: 10px; }
+  </style>
 </head>
 <body>
-    Please wait for redirect
-</body>
+  <div class="overlay">Point the camera at the table QR</div>
+  <video id="video" autoplay playsinline></video>
 
-<script src="script.js"></script>
+  <!-- jsQR library from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="./scanner.js"></script>
+  <script src="./qr.js"></script>
+</body>
 </html>

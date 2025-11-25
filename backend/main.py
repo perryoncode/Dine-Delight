@@ -23,6 +23,7 @@ app.add_middleware(
 client = MongoClient("mongodb+srv://codewithperry:uYIoXdcbIBi3qdBh@cluster0.iub7ykj.mongodb.net/")
 db = client["Restaurant"]
 userCollection = db["users"]
+dishesCollection = db["dishes"]
 
 
 @app.get("/")
@@ -76,9 +77,16 @@ def login(user: LoginUser):
 
 
 
-@app.get("/table/{tableID}")
-def tableResolver(tableID):
+@app.get("/dishes")
+def dishes():
+    dishes = []
+    cursor = dishesCollection.find({})   # fetch all dishes
+
+    for d in cursor:
+        d["_id"] = str(d["_id"])         # convert ObjectId to string
+        dishes.append(d)
+
     return {
-        "data" : tableID
-        
-    }
+        "response": "success",
+        "dishes": dishes}
+

@@ -120,53 +120,6 @@
     </section>
     
     </div>
-
-
-<script>
-// Typewriter effect for the search input placeholder
-const dishes = [
-  "Brownie",
-  "Chole Bhature",
-  "Fries",
-  "Maggie",
-  "Momos",
-  "Panipuri",
-  "Paneer Tikka",
-  "Soya Chaap"
-];
-const input = document.getElementById('searchInput');
-let dishIndex = 0;
-let charIndex = 0;
-let typing = true;
-
-function typeWriter() {
-  if (!input) return;
-  const currentDish = dishes[dishIndex];
-  if (typing) {
-    if (charIndex <= currentDish.length) {
-      input.placeholder = currentDish.slice(0, charIndex);
-      charIndex++;
-      setTimeout(typeWriter, 100);
-    } else {
-      typing = false;
-      setTimeout(typeWriter, 1000);
-    }
-  } else {
-    if (charIndex > 0) {
-      input.placeholder = currentDish.slice(0, charIndex);
-      charIndex--;
-      setTimeout(typeWriter, 40);
-    } else {
-      typing = true;
-      dishIndex = (dishIndex + 1) % dishes.length;
-      setTimeout(typeWriter, 400);
-    }
-  }
-}
-typeWriter();
-</script>
-
-
   <footer>
     <div class="footer">
       <div class="learnMore">
