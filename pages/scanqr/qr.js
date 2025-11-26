@@ -17,13 +17,15 @@ if (!tableId) {
   // 10 minutes
   const maxAge = 60 * 10;
 
-  const tableLabel = `Table ${tableId}`;
-  const tableMail = `table${tableId}@dinedelight.tech`;   // 👈 IMPORTANT
+  // Sanitize tableId: remove all non-digit characters (handles trailing slashes)
+  const cleanTableId = (tableId + '').replace(/\D/g, "");
+  const tableLabel = `Table ${cleanTableId}`;
+  const tableMail = `table${cleanTableId}@dinedelight.tech`;
 
   document.cookie = `name=${encodeURIComponent(tableLabel)};path=/;max-age=${maxAge}`;
-  document.cookie = `id=${encodeURIComponent(tableId)};path=/;max-age=${maxAge}`;
+  document.cookie = `id=${encodeURIComponent(cleanTableId)};path=/;max-age=${maxAge}`;
   document.cookie = `mail=${encodeURIComponent(tableMail)};path=/;max-age=${maxAge}`;
-  document.cookie = `role=table;path=/;max-age=${maxAge}`; // 👈 extra safety
+  document.cookie = `role=table;path=/;max-age=${maxAge}`;
 
   console.log("Cookies set:", document.cookie);
 

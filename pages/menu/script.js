@@ -29,8 +29,25 @@ function updateCheckoutCount() {
 
 updateCheckoutCount();
 
+
+function getTableInfo(email) {
+  if (!email) return null;
+  let match = email.match(/^table(\d+)@dinedelight\.tech$/i);
+  if (!match) match = email.match(/^(\d+)@dinedelight\.tech$/i);
+  if (!match) return null;
+  const number = match[1];
+  return { number, label: `Table ${number}` };
+}
+
 (function initProfile() {
   const name = getCookie("name");
+  const email = getCookie("mail");
+  const role = getCookie("role");
+  const isTable = role === "table" || !!getTableInfo(email);
+  if (isTable && myProfile) {
+    myProfile.style.display = "none";
+    return;
+  }
   if (name && myProfile) {
     myProfile.innerHTML = `<i class="fa-solid fa-user"></i> ${name}`;
   }
@@ -42,7 +59,7 @@ if (logoutButton) {
     document.cookie = "id=;path=/;max-age=0";
     document.cookie = "name=;path=/;max-age=0";
     document.cookie = "mail=;path=/;max-age=0";
-    window.location.href = "../login/index.html";
+    window.location.href = "/index.html";
   });
 }
 

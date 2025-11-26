@@ -22,7 +22,25 @@ function getCookie(name) {
   return null;
 }
 
+// Table info helper (sanitizes trailing slashes)
+function getTableInfo(email) {
+  if (!email) return null;
+  // Remove any trailing slash or whitespace
+  email = email.replace(/[\s\/]+$/, "");
+  let match = email.match(/^table(\d+)@dinedelight\.tech$/i);
+  if (!match) match = email.match(/^(\d+)@dinedelight\.tech$/i);
+  if (!match) return null;
+  const number = match[1];
+  return { number, label: `Table ${number}`, mail: `table${number}@dinedelight.tech` };
+}
+
+
+// Add checklist state to cart items (default: checked)
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+cart.forEach(item => {
+  if (item.checked === undefined) item.checked = true;
+});
+saveCart();
 
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
@@ -37,8 +55,25 @@ function updateCheckoutCount() {
 // Init profile (same style as menu page)
 (function initProfile() {
   const name = getCookie("name");
+  let email = getCookie("mail");
+  const role = getCookie("role");
+  const tableInfo = getTableInfo(email);
+  const isTable = role === "table" || !!tableInfo;
+  if (isTable && tableInfo) {
+    // Always use sanitized label and mail
+    if (myProfile) {
+      myProfile.innerHTML = `<i class=\"fa-solid fa-user\"></i> ${tableInfo.label}`;
+    }
+    // Optionally, update cookie to correct mail if needed
+    if (email !== tableInfo.mail) {
+      document.cookie = `mail=${tableInfo.mail};path=/;max-age=${60 * 60 * 24 * 365 * 10}`;
+    }
+    return;
+  }
   if (name && myProfile) {
-    myProfile.innerHTML = `<i class="fa-solid fa-user"></i> ${name}`;
+    let displayName = name;
+    try { displayName = decodeURIComponent(name); } catch (e) {}
+    myProfile.innerHTML = `<i class=\"fa-solid fa-user\"></i> ${displayName}`;
   }
 })();
 
@@ -49,7 +84,8 @@ if (logoutButton) {
     document.cookie = "id=;path=/;max-age=0";
     document.cookie = "name=;path=/;max-age=0";
     document.cookie = "mail=;path=/;max-age=0";
-    window.location.href = "../login/index.html";
+    document.cookie = "role=;path=/;max-age=0";
+    window.location.href = "/index.html";
   });
 }
 
@@ -76,10 +112,12 @@ function renderCart() {
     placeOrderBtn.classList.remove("disabled");
   }
 
+
   cart.forEach((item, index) => {
     const row = document.createElement("div");
     row.className = "checkout-item";
     row.dataset.index = index;
+
 
     row.innerHTML = `
       <div class="ci-name">
@@ -101,7 +139,8 @@ function renderCart() {
       <div class="ci-total">
         ₹${item.price * item.quantity}
       </div>
-      <button class="remove-item">
+      <input type="checkbox" class="item-check" ${item.checked !== false ? "checked" : ""} />
+      <button class="remove-item" style="margin-left: 0.2em; vertical-align: middle;">
         <i class="fa-solid fa-xmark"></i>
       </button>
     `;
@@ -115,8 +154,9 @@ function renderCart() {
 }
 
 function updateTotals() {
+  // Only include checked items in totals
   const subtotal = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => (item.checked !== false ? sum + item.price * item.quantity : sum),
     0
   );
   const tax = 0; // set some % if you want
@@ -137,13 +177,20 @@ function attachRowListeners() {
     const plusBtn = row.querySelector(".qty-btn.plus");
     const removeBtn = row.querySelector(".remove-item");
     const qtyInput = row.querySelector(".qty-input");
+    const checkBox = row.querySelector(".item-check");
+
+    // Checklist
+    checkBox.addEventListener("change", () => {
+      cart[index].checked = checkBox.checked;
+      saveCart();
+      updateTotals();
+    });
 
     // - button
     minusBtn.addEventListener("click", () => {
       if (cart[index].quantity > 1) {
         cart[index].quantity -= 1;
       } else {
-        // if quantity becomes 0, remove item
         cart.splice(index, 1);
       }
       saveCart();
@@ -167,11 +214,9 @@ function attachRowListeners() {
     // direct typing in the input
     qtyInput.addEventListener("change", () => {
       let val = parseInt(qtyInput.value, 10);
-
       if (isNaN(val) || val < 1) {
-        val = 1; // clamp to minimum 1
+        val = 1;
       }
-
       cart[index].quantity = val;
       saveCart();
       renderCart();
@@ -182,8 +227,10 @@ function attachRowListeners() {
 // ==== ORDER SUBMISSION ====
 // NOTE: change URL/payload to match your FastAPI backend if needed.
 async function placeOrder() {
-  if (!cart.length) {
-    alert("Your table is empty.");
+  // Only place checked items
+  const checkedItems = cart.filter(item => item.checked !== false);
+  if (!checkedItems.length) {
+    alert("Please select at least one item to place an order.");
     return;
   }
 
@@ -199,7 +246,7 @@ async function placeOrder() {
       user_id: userId || null,
       name: userName || null,
       email: userMail || null,
-      items: cart.map((item) => ({
+      items: checkedItems.map((item) => ({
         name: item.name,
         price: item.price,
         quantity: item.quantity,
@@ -222,8 +269,8 @@ async function placeOrder() {
 
     alert("Order placed successfully! 🎉 Your food is on the way.");
 
-    // Clear cart
-    cart = [];
+    // Remove only placed (checked) items from cart
+    cart = cart.filter(item => item.checked === false);
     saveCart();
     renderCart();
 

@@ -18,12 +18,11 @@ function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) {
-    const raw = parts.pop().split(";").shift();
-    // Decode if it was set with encodeURIComponent
+    // Always decode URI components for all cookies
     try {
-      return decodeURIComponent(raw);
+      return decodeURIComponent(parts.pop().split(";").shift());
     } catch (e) {
-      return raw;
+      return parts.pop().split(";").shift();
     }
   }
   return null;
@@ -45,16 +44,17 @@ function getTableInfo(email) {
   if (!email) return null;
 
   // pattern 1: table9@dinedelight.tech
-  let match = email.match(/^table(\d+)@dinedelight\.tech$/i);
+  let match = email.match(/^table(\d+)@dinedelight\.tech\/?$/i);
 
   // pattern 2: 9@dinedelight.tech
   if (!match) {
-    match = email.match(/^(\d+)@dinedelight\.tech$/i);
+    match = email.match(/^(\d+)@dinedelight\.tech\/?$/i);
   }
 
   if (!match) return null;
 
-  const number = match[1];
+  // Remove any trailing non-digit chars (e.g., slash)
+  let number = match[1].replace(/\D+$/, "");
   return {
     number,
     label: `Table ${number}`,
@@ -128,8 +128,8 @@ if (logoutButton) {
     document.cookie = "id=;path=/;max-age=0";
     document.cookie = "name=;path=/;max-age=0";
     document.cookie = "mail=;path=/;max-age=0";
-    document.cookie = "role=;path=/;max-age=0"; // in case you add role later
-    window.location.href = "../login/index.html";
+    document.cookie = "role=;path=/;max-age=0";
+    window.location.href = "/index.html";
   });
 }
 
@@ -146,31 +146,38 @@ async function initProfilePage() {
 
   // Always fetch from backend
   try {
+    // Always use cookies/localStorage for table accounts, ignore backend for these fields
+    const cookieMail = getCookie("mail");
+    const cookieName = getCookie("name");
+    const role = getCookie("role");
+    const tableInfo = getTableInfo(cookieMail);
+    const isTable = role === "table" || !!tableInfo;
+    if (isTable) {
+      const tableLabel = tableInfo?.label || (cookieName ? cookieName.replace(/\/$/, "") : "Table");
+      if (usernameInput) usernameInput.value = tableLabel;
+      if (emailInput) emailInput.value = cookieMail ? cookieMail.replace(/\/$/, "") : "";
+      let tableAddress = localStorage.getItem("tableAddress") || tableLabel;
+      if (addressInput) addressInput.value = tableAddress;
+      if (myProfile) myProfile.innerHTML = `<i class=\"fa-solid fa-user\"></i> ${tableLabel}`;
+      if (profileTypeBadge) {
+        profileTypeBadge.textContent = "Table Account";
+        profileTypeBadge.classList.add("table");
+      }
+      lockTableProfileUI(tableLabel);
+      return;
+    }
+
+    // Normal user: fetch from backend
     const res = await fetch(`${API_BASE}/profile?id=${encodeURIComponent(userId)}`);
     if (!res.ok) return;
     const data = await res.json();
     if (data.response !== "success" || !data.user) return;
     const user = data.user;
-
-    // Table account detection (if needed)
-    const tableInfo = getTableInfo(user.email);
-    const isTable = role === "table" || !!tableInfo;
-    if (isTable) {
-      const tableLabel = tableInfo?.label || user.name || "Table";
-      if (usernameInput) usernameInput.value = tableLabel;
-      if (emailInput) emailInput.value = user.email || "";
-      if (addressInput) addressInput.value = tableLabel;
-      if (myProfile) myProfile.innerHTML = `<i class="fa-solid fa-user"></i> ${tableLabel}`;
-      lockTableProfileUI(tableLabel);
-      return;
-    }
-
-    // Normal user: fill all fields from backend
     enableUserProfileUI();
     if (usernameInput) usernameInput.value = user.name || "";
     if (emailInput) emailInput.value = user.email || "";
     if (addressInput) addressInput.value = user.address || "";
-    if (myProfile) myProfile.innerHTML = `<i class="fa-solid fa-user"></i> ${user.name || "Profile"}`;
+    if (myProfile) myProfile.innerHTML = `<i class=\"fa-solid fa-user\"></i> ${user.name || "Profile"}`;
   } catch (err) {
     console.warn("Could not load profile info:", err);
   }

@@ -1,3 +1,19 @@
+/* === Custom Checkbox for Checkout Items === */
+.checkout-item .item-check {
+  width: 1.3em;
+  height: 1.3em;
+  accent-color: #ec4747;
+  border-radius: 6px;
+  margin-left: 0.7em;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: box-shadow 0.15s;
+  outline: none;
+}
+.checkout-item .item-check:focus {
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
 /* ============== GLOBAL BASE FOR THIS PAGE ============== */
 
 body {
@@ -142,7 +158,7 @@ body {
 
 .checkout-item {
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr 1fr auto;
+  grid-template-columns: 2fr 1fr 2fr 1fr auto auto;
   align-items: center;
   padding: 0.8rem 1rem;
   border-radius: 12px;
