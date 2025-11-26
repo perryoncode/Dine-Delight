@@ -222,11 +222,15 @@ if (profileForm) {
     try {
 
       // Prepare payload for /update_profile
+      // Use current cookie mail as identifier, send new_mail if changed
       const payload = {
-        mail: email, // backend expects 'mail'
+        mail: cookieMail,
+        name: name,
         address: address,
-        // icon: iconValue, // add if you support icon upload
       };
+      if (email && email !== cookieMail) {
+        payload.new_mail = email;
+      }
 
       const res = await fetch(`${API_BASE}/update_profile`, {
         method: "PUT",
@@ -243,12 +247,9 @@ if (profileForm) {
       }
 
       // Update cookies with new name/email
-      document.cookie = `name=${encodeURIComponent(
-        name
-      )};path=/;max-age=${60 * 60 * 24 * 7}`;
-      document.cookie = `mail=${encodeURIComponent(
-        email
-      )};path=/;max-age=${60 * 60 * 24 * 7}`;
+      document.cookie = `name=${encodeURIComponent(name)};path=/;max-age=${60 * 60 * 24 * 7}`;
+      const effectiveEmail = email && email !== cookieMail ? email : cookieMail;
+      document.cookie = `mail=${encodeURIComponent(effectiveEmail)};path=/;max-age=${60 * 60 * 24 * 7}`;
 
       setInfoMessage("Profile updated successfully ✅");
       alert("Profile updated successfully!");

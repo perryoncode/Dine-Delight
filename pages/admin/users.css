@@ -1,0 +1,195 @@
+.users-section {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.users-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 2fr auto;
+  gap: 10px;
+  background: #fafafa;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 10px 0 6px;
+  font-weight: 600;
+  color: #555;
+}
+.users-header > *,
+.user-row > * {
+  padding-right: 10px;
+  border-right: 2px solid #000000;
+}
+.users-header > *:last-child,
+.user-row > *:last-child {
+  border-right: none;
+}
+/* Users admin page styling, aligned with tables */
+
+#createUserForm.admin-form {
+  display: grid;
+  /* label,input | label,input | label,input | label,input | button */
+  grid-template-columns:
+    auto minmax(160px, 220px)
+    auto minmax(220px, 300px)
+    auto minmax(220px, 300px)
+    auto minmax(160px, 220px)
+    auto;
+  column-gap: 10px;
+  row-gap: 12px;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+#createUserForm.admin-form label {
+  display: block;
+  font-weight: 600;
+  color: #c0392b;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+#createUserForm.admin-form input {
+  padding: 10px 12px;
+  border: 1.5px solid #efdfdf;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #fff;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+#createUserForm.admin-form input:focus {
+  border-color: #e67e22;
+  box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.12);
+}
+#createUserForm.admin-form button[type="submit"] {
+  padding: 12px 16px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: filter .15s ease, transform .06s ease;
+  white-space: nowrap;
+}
+#createUserForm.admin-form button[type="submit"]:hover { filter: brightness(0.95); }
+#createUserForm.admin-form button[type="submit"]:active { transform: translateY(1px); }
+
+@media (max-width: 859.98px) {
+  #createUserForm.admin-form { grid-template-columns: 1fr; }
+  #createUserForm.admin-form button[type="submit"] { width: 100%; }
+}
+
+/* Medium layouts: allow the button to drop if space is tight */
+@media (max-width: 1100px) and (min-width: 860px) {
+  #createUserForm.admin-form {
+    grid-template-columns:
+      auto minmax(160px, 1fr)
+      auto minmax(200px, 1.2fr)
+      auto minmax(200px, 1.2fr)
+      auto minmax(160px, 1fr);
+  }
+  #createUserForm.admin-form button[type="submit"] {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 6px;
+  }
+}
+
+#usersList {
+  display: grid;
+  gap: 12px;
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 2fr auto;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.user-row .meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-row .meta .id-badge {
+  font-size: 0.85rem;
+  color: #666;
+  background: #f3f3f3;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.user-row .actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.user-row .actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.user-row .actions .edit {
+  background: #4a7df5;
+}
+
+.user-row .actions .delete {
+  background: #f54848;
+}
+
+/* Add colors for Save/Cancel buttons in edit mode */
+.user-row .actions .save {
+  background: #27ae60; /* green */
+}
+.user-row .actions .cancel {
+  background: #95a5a6; /* grey */
+}
+.user-row .actions .save i,
+.user-row .actions .cancel i {
+  color: #fff;
+}
+
+.user-row input[type="text"],
+.user-row input[type="email"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Toast styles (reused) */
+.toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
+  z-index: 1000;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+.toast.success { background: #22c55e; }
+.toast.error { background: #ef4444; }
+
+@media (max-width: 760px) {
+  .user-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .user-row .actions { justify-content: flex-start; }
+}

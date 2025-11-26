@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Tables | Smart Restaurant Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="tables.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="Logo">
+    </div>
+    <div class="buttons">
+      <a class="logoutButton" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+    </div>
+  </nav>
+  <main style="max-width: 50vw;" class="admin-main">
+    <h1>Manage Tables</h1>
+    <form id="generateTableForm" class="admin-form">
+      <label for="tableId">Table ID</label>
+      <input type="number" id="tableId" min="1" required placeholder="e.g. 12" />
+      
+      <label for="numSeats">Number of Seats</label>
+      <input type="number" id="numSeats" min="1" max="20" value="2" required />
+
+      <button type="submit">Generate Table</button>
+    </form>
+    <div id="tableResult" class="admin-section"></div>
+    <section id="tablesList" class="admin-section"></section>
+  </main>
+  <script src="tables.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Smart Restaurant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="Logo">
+    </div>
+    <div class="buttons">
+      <a class="logoutButton" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+    </div>
+  </nav>
+  <main class="admin-main">
+    <h1>Admin Dashboard</h1>
+    <div class="admin-cards">
+      <a class="admin-card" id="usersCard" href="users.html" style="text-decoration:none; color:inherit; cursor:pointer;">
+        <h2>Users</h2>
+        <p id="userCount">Loading...</p>
+      </a>
+      <a class="admin-card" id="tablesCard" href="tables.html" style="text-decoration:none; color:inherit; cursor:pointer;">
+        <h2>Tables</h2>
+        <p id="tableCount">Loading...</p>
+      </a>
+      <div class="admin-card" id="ordersCard">
+        <h2>Orders</h2>
+        <p id="orderCount">Loading...</p>
+      </div>
+    </div>
+    <section class="admin-section" id="adminDetails">
+      <!-- Dynamic admin content here -->
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

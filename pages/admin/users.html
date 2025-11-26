@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Users | Smart Restaurant Admin</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="users.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/704ff50790.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="Logo" />
+    </div>
+    <div class="buttons">
+      <a class="logoutButton" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+    </div>
+  </nav>
+  <main class="admin-main">
+    <h1>Manage Users</h1>
+
+    <section class="users-section">
+    <form id="createUserForm" class="admin-form">
+      <label for="userName">Name</label>
+      <input type="text" id="userName" required placeholder="e.g. Teena Sharma" />
+
+      <label for="userEmail">Email</label>
+      <input type="email" id="userEmail" required placeholder="e.g. alex@example.com" />
+
+      <label for="userAddress">Address</label>
+      <input type="text" id="userAddress" placeholder="Address (optional)" />
+
+      <label for="userPassword">Password</label>
+      <input type="password" id="userPassword" required placeholder="Set a password" />
+
+      <button type="submit">Create User</button>
+    </form>
+
+    <div id="userResult" class="admin-section"></div>
+    <div id="usersHeader" class="users-header" style="display:none;"></div>
+    <section id="usersList" class="admin-section"></section>
+    </section>
+  </main>
+  <script src="users.js"></script>
+</body>
+</html>
