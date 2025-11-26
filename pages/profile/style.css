@@ -1,0 +1,266 @@
+body {
+  background-color: rgb(241, 236, 236);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Poppins, sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar {
+  background-color: #ec4747;
+  height: 8vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar > .buttons > a {
+  font-size: 1.1rem;
+  color: white;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.buttons {
+  margin-right: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.buttons > a:hover {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#logo > img {
+  height: 6vh;
+  width: 10vw;
+  z-index: 99;
+}
+
+#logo {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* MAIN CONTAINER */
+
+.cont {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.profile-page {
+  min-height: calc(100vh - 8vh - 50vh); /* viewport minus navbar/footer */
+  padding: 2rem 1rem 3rem;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.8rem 1.8rem 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+  max-width: 600px;
+  width: 100%;
+}
+
+/* PROFILE HEADER */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.avatar {
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+  background-color: #ffe0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ec4747;
+  font-size: 1.5rem;
+}
+
+.profile-title h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #e8f5ff;
+  color: #1976d2;
+}
+
+/* TABLE account style for badge */
+.badge.table {
+  background-color: #fff3cd;
+  color: #b38703;
+}
+
+/* FORM */
+
+.profile-form {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.65rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  background-color: #fafafa;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #ec4747;
+  box-shadow: 0 0 0 2px rgba(236, 71, 71, 0.2);
+  background-color: #ffffff;
+}
+
+/* Readonly styling for table accounts */
+.form-group input[readonly],
+.form-group textarea[readonly] {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+
+/* info message */
+
+.info-message {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.3rem;
+  min-height: 1.2rem;
+}
+
+/* Save button */
+
+.save-btn {
+  margin-top: 0.3rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background-color: #ec4747;
+  color: white;
+  box-shadow: 0 3px 8px rgba(236, 71, 71, 0.35);
+  transition: background-color 0.15s ease, transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.save-btn:hover {
+  background-color: #d63e3e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(236, 71, 71, 0.45);
+}
+
+.save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(236, 71, 71, 0.3);
+}
+
+.save-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top: 2rem;
+  height: 50vh;
+  width: 100%;
+  background-color: #000;
+  display: flex;
+}
+
+.footerHeading {
+  margin-bottom: 6px;
+  width: 180px;
+  text-align: left;
+  font-size: medium;
+  text-decoration: none;
+  color: white;
+}
+
+.learnMore,
+.socials {
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  width: 50%;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.learnMore > a,
+.socials > a {
+  margin: 2px;
+  width: 180px;
+  text-align: left;
+  font-size: 0.89rem;
+  text-decoration: none;
+  color: rgb(127, 123, 123);
+}
+
+.learnMore a:hover,
+.socials a:hover {
+  color: white;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 650px) {
+  .profile-card {
+    padding: 1.4rem 1.2rem 1.6rem;
+  }
+
+  .profile-title h1 {
+    font-size: 1.4rem;
+  }
+}
