@@ -29,15 +29,51 @@
         <h2>Tables</h2>
         <p id="tableCount">Loading...</p>
       </a>
-      <div class="admin-card" id="ordersCard">
+      <a class="admin-card" id="ordersCard" href="orders.html" style="text-decoration:none; color:inherit; cursor:pointer;">
         <h2>Orders</h2>
         <p id="orderCount">Loading...</p>
-      </div>
+      </a>
     </div>
-    <section class="admin-section" id="adminDetails">
-      <!-- Dynamic admin content here -->
+    <section class="admin-section" id="analytics">
+      <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
+        <h2 style="margin:0; color:#c0392b;">Analytics</h2>
+        <label style="display:flex; align-items:center; gap:6px; color:#555;">
+          Month:
+          <input type="month" id="analyticsMonth" style="padding:6px 8px; border:1px solid #ddd; border-radius:8px;" />
+        </label>
+        <button id="refreshAnalytics" style="padding:8px 12px; border:1px solid #ddd; border-radius:999px; background:#f0f2f5; color:#333; cursor:pointer;">Refresh</button>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start;">
+        <div class="chart-card" style="background:#fff; border:1px solid #eee; border-radius:12px; padding:16px;">
+          <h3 style="margin:0 0 10px; color:#333;">Most Ordered Items</h3>
+          <canvas id="topItemsChart" height="180"></canvas>
+        </div>
+        <div class="chart-card" style="background:#fff; border:1px solid #eee; border-radius:12px; padding:16px;">
+          <h3 style="margin:0 0 10px; color:#333;">Monthly Sales</h3>
+          <canvas id="totalSalesChart" height="180"></canvas>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start; margin-top: 20px;">
+        <div class="chart-card" style="background:#fff; border:1px solid #eee; border-radius:12px; padding:16px;">
+          <h3 style="margin:0 0 10px; color:#333;">Daily Sales</h3>
+          <canvas id="dailySalesChart" height="180"></canvas>
+        </div>
+        <div class="chart-card" style="background:#fff; border:1px solid #eee; border-radius:12px; padding:16px;">
+          <h3 style="margin:0 0 10px; color:#333;">Top Customers</h3>
+          <canvas id="topCustomersChart" height="180"></canvas>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr; gap:20px; align-items:start; margin-top: 20px;">
+        <div class="chart-card" style="background:#fff; border:1px solid #eee; border-radius:12px; padding:16px;">
+          <h3 style="margin:0 0 10px; color:#333;">Category-wise Items</h3>
+          <div style="width:40vw; height:40vh;">
+            <canvas id="categoryItemsChart"></canvas>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

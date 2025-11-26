@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders | Smart Restaurant Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="orders.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/704ff50790.js" crossorigin="anonymous"></script>
+  <script>
+    // Optional: redirect if accessed outside admin path
+  </script>
+  <style>
+    /* small tweaks to match admin look */
+    .orders-tools { display:flex; gap:8px; align-items:center; }
+    .orders-tools input { flex:1; min-width:260px; }
+    .orders-tools button { white-space:nowrap; }
+  </style>
+  
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="Logo">
+    </div>
+    <div class="buttons">
+      <a class="logoutButton" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+    </div>
+  </nav>
+  <main class="admin-main">
+    <h1>Manage Orders</h1>
+
+    <section class="admin-section">
+      <div class="orders-tools">
+        <input id="filterEmail" type="email" placeholder="Filter by customer email" />
+        <button id="refreshBtn">Refresh</button>
+        <a id="backBtn" class="pill-button" href="index.html">Back to Dashboard</a>
+      </div>
+      <div class="meta" style="margin-top:8px;">
+        <span id="totalCount">0</span> total orders
+      </div>
+      <div class="table-wrapper" style="margin-top:10px;">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Email</th>
+              <th>Items</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <button id="prevPage">Prev</button>
+        <span id="pageInfo">Page 1</span>
+        <button id="nextPage">Next</button>
+      </div>
+    </section>
+  </main>
+  <script src="orders.js"></script>
+</body>
+</html>

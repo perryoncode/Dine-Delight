@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 import os
+from datetime import datetime
+import random
 
 load_dotenv()
 
@@ -67,6 +69,19 @@ class AdminUserUpdate(BaseModel):
     mail: Optional[EmailStr] = None
     address: Optional[str] = None
     icon: Optional[str] = None
+
+
+class OrderItem(BaseModel):
+    name: str
+    price: float
+    quantity: int
+
+
+class OrderModel(BaseModel):
+    user_id: Optional[str] = None
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    items: list[OrderItem]
 
 
 # -------------------- Root --------------------
@@ -269,6 +284,183 @@ def delete_table(table_id: int):
     if result.deleted_count == 0:
         return {"response": "not_found"}
     return {"response": "success"}
+
+
+# -------------------- Orders --------------------
+@app.post("/orders")
+def create_order(order: OrderModel):
+    if not order.items:
+        return {"response": "invalid_request", "message": "No items"}
+    total = sum([item.price * item.quantity for item in order.items])
+    payload = {
+        "user_id": order.user_id,
+        "name": order.name,
+        "email": order.email,
+        "items": [item.dict() for item in order.items],
+        "total": total,
+        "created_at": datetime.utcnow(),
+    }
+    ordersCollection.insert_one(payload)
+    return {"response": "success"}
+
+
+@app.get("/orders")
+def list_orders(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    customer_email: Optional[str] = Query(None),
+):
+    query = {}
+    if customer_email:
+        query["email"] = customer_email
+    cursor = ordersCollection.find(query).sort("created_at", -1).skip(offset).limit(limit)
+    orders = []
+    for o in cursor:
+        o["_id"] = str(o.get("_id"))
+        # Compact items summary for convenience
+        items = o.get("items", [])
+        o["items_count"] = sum([i.get("quantity", 0) for i in items])
+        orders.append(o)
+    total_count = ordersCollection.count_documents(query)
+    return {"response": "success", "orders": orders, "total": total_count}
+
+
+@app.get("/analytics")
+def analytics(month: Optional[str] = Query(None)):
+    # Optional month filter in format YYYY-MM
+    date_filter = {}
+    if month:
+        try:
+            year_s, mon_s = month.split("-")
+            year, mon = int(year_s), int(mon_s)
+            # Use naive datetimes to match existing stored UTC-naive timestamps
+            start = datetime(year, mon, 1)
+            if mon == 12:
+                next_start = datetime(year + 1, 1, 1)
+            else:
+                next_start = datetime(year, mon + 1, 1)
+            date_filter = {"created_at": {"$gte": start, "$lt": next_start}}
+        except Exception:
+            date_filter = {}
+    # Total sales
+    pipeline_total = [
+        {"$match": date_filter} if date_filter else {"$match": {}},
+        {"$group": {"_id": None, "totalSales": {"$sum": "$total"}, "orders": {"$sum": 1}}}
+    ]
+    total_doc = list(ordersCollection.aggregate(pipeline_total))
+    total_sales = total_doc[0]["totalSales"] if total_doc else 0
+    orders_count = total_doc[0]["orders"] if total_doc else 0
+
+    # Most ordered items by quantity
+    pipeline_items = [
+        {"$match": date_filter} if date_filter else {"$match": {}},
+        {"$unwind": "$items"},
+        {"$group": {"_id": "$items.name", "quantity": {"$sum": "$items.quantity"}}},
+        {"$sort": {"quantity": -1}},
+        {"$limit": 10},
+    ]
+    items = list(ordersCollection.aggregate(pipeline_items))
+    top_items = [{"name": d["_id"], "quantity": d["quantity"]} for d in items]
+
+    return {
+        "response": "success",
+        "total_sales": total_sales,
+        "orders": orders_count,
+        "top_items": top_items,
+    }
+
+
+@app.get("/analytics/monthly")
+def analytics_monthly(months: int = Query(12, ge=1, le=36)):
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"$dateToString": {"format": "%Y-%m", "date": "$created_at"}},
+                "total": {"$sum": "$total"},
+                "orders": {"$sum": 1},
+            }
+        },
+        {"$sort": {"_id": 1}},
+    ]
+    docs = list(ordersCollection.aggregate(pipeline))
+    # Keep only the last N months
+    if len(docs) > months:
+        docs = docs[-months:]
+    series = [{"month": d.get("_id"), "total": d.get("total", 0), "orders": d.get("orders", 0)} for d in docs]
+    return {"response": "success", "series": series}
+
+
+@app.get("/analytics/daily")
+def analytics_daily():
+    # Group totals per day (UTC) based on created_at
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"$dateToString": {"format": "%Y-%m-%d", "date": "$created_at"}},
+                "total": {"$sum": "$total"},
+                "orders": {"$sum": 1},
+            }
+        },
+        {"$sort": {"_id": 1}},
+    ]
+    docs = list(ordersCollection.aggregate(pipeline))
+    series = [{"date": d["_id"], "total": d["total"], "orders": d["orders"]} for d in docs]
+    return {"response": "success", "series": series}
+
+
+@app.get("/analytics/top_customers")
+def analytics_top_customers():
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"name": "$name", "email": "$email"},
+                "spent": {"$sum": "$total"},
+                "orders": {"$sum": 1},
+            }
+        },
+        {"$sort": {"spent": -1}},
+        {"$limit": 10},
+    ]
+    docs = list(ordersCollection.aggregate(pipeline))
+    customers = [{
+        "name": (d["_id"] or {}).get("name") or "",
+        "email": (d["_id"] or {}).get("email") or "",
+        "spent": d.get("spent", 0),
+        "orders": d.get("orders", 0),
+    } for d in docs]
+    return {"response": "success", "customers": customers}
+
+
+@app.get("/analytics/categories")
+def analytics_categories():
+    # Build name->category map from dishes collection if available
+    name_to_cat = {}
+    try:
+        for d in dishesCollection.find({}, {"name": 1, "category": 1}):
+            name = d.get("name")
+            cat = d.get("category") or "Uncategorized"
+            if name:
+                name_to_cat[name] = cat
+    except Exception:
+        pass
+
+    # Aggregate items ordered and map to categories
+    pipeline = [
+        {"$unwind": "$items"},
+        {"$group": {"_id": "$items.name", "quantity": {"$sum": "$items.quantity"}}},
+    ]
+    item_docs = list(ordersCollection.aggregate(pipeline))
+    cat_totals = {}
+    for doc in item_docs:
+        item_name = doc.get("_id")
+        qty = doc.get("quantity", 0)
+        cat = name_to_cat.get(item_name, "Uncategorized")
+        cat_totals[cat] = cat_totals.get(cat, 0) + qty
+
+    categories = [{"category": k, "quantity": v} for k, v in cat_totals.items()]
+    return {"response": "success", "categories": categories}
+
+
 
 
 # -------------------- Stats --------------------

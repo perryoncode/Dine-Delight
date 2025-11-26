@@ -289,3 +289,11 @@ if (localStorage.getItem("showAddressToaster") === "1") {
 }
 
 initProfilePage();
+
+// Back to Menu button behavior (like checkout)
+const backToMenuBtn = document.getElementById("backToMenuBtn");
+if (backToMenuBtn) {
+  backToMenuBtn.addEventListener("click", () => {
+    window.location.href = "../menu/index.html";
+  });
+}
