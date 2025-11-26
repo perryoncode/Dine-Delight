@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://kit.fontawesome.com/a9eb96d961.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Smart Restaurant</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+
+<body>
+  <nav>
+    <div class="navbar">
+      <div class="logo" id="logo">
+        <img src="../../assets/logo.png" alt="Logo">
+      </div>
+      <div class="buttons">
+        <a class="myProfile" href="../profile/index.html">
+          <i class="fa-solid fa-user"></i> My Profile
+        </a>
+        <a class="logoutButton" href="../login/index.html">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="cont checkout-page">
+    <h1 class="checkout-heading">
+      <i class="fa-solid fa-receipt"></i> Checkout
+    </h1>
+
+    <div class="checkout-layout">
+      <!-- LEFT: ITEMS -->
+      <div class="checkout-items" id="checkoutItems">
+        <!-- JS will inject cart rows here -->
+      </div>
+
+      <!-- RIGHT: SUMMARY -->
+      <aside class="checkout-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotalAmount">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>Estimated Tax (0%)</span>
+          <span id="taxAmount">₹0</span>
+        </div>
+        <hr />
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <span id="totalAmount">₹0</span>
+        </div>
+
+        <button class="place-order-btn" id="placeOrderBtn">
+          <i class="fa-solid fa-check"></i> Place Order
+        </button>
+
+        <button class="back-to-menu-btn" id="backToMenuBtn">
+          <i class="fa-solid fa-arrow-left"></i> Back to Menu
+        </button>
+      </aside>
+    </div>
+
+    <p class="empty-message" id="emptyMessage" style="display: none;">
+      Your table is empty. Go back to the menu and add some dishes 🍽️
+    </p>
+  </div>
+
+  <footer>
+    <div class="footer">
+      <div class="learnMore">
+        <p class="footerHeading">Learn More</p>
+        <a href="../about/index.html">About Us</a>
+        <a href="../privacy/index.html">Privacy</a>
+        <a href="../terms/index.html">Terms of Service</a>
+        <a href="../support/index.html">Help and Support</a>
+        <a href="../contact/index.html">Contact Us</a>
+      </div>
+      <div class="socials">
+        <p class="footerHeading">Our Socials</p>
+        <a href="https://discord.com">Discord</a>
+        <a href="https://linkedin.com">LinkedIn</a>
+        <a href="https://twitter.com">Twitter</a>
+        <a href="https://youtube.com">Youtube</a>
+        <br />
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -134,17 +134,8 @@ if (viewItemsBtn) {
       alert("No items added to table yet.");
       return;
     }
-
-    let msg = "Items on your table:\n\n";
-    let total = 0;
-    cart.forEach((item) => {
-      const lineTotal = item.price * item.quantity;
-      total += lineTotal;
-      msg += `${item.name}  x${item.quantity}  = ₹${lineTotal}\n`;
-    });
-    msg += `\nTotal: ₹${total}`;
-
-    alert(msg);
+    // Go to checkout page
+    window.location.href = "../checkout/index.html";
   });
 }
 
